@@ -1,0 +1,7 @@
+FastAPI is a modern web framework for building APIs with Python.
+It is fast, easy to use, and supports asynchronous programming.
+
+LangChain is a framework used to build applications powered by large language models.
+It helps in building chatbots, RAG systems, and AI agents.
+
+Retrieval-Augmented Generation (RAG) allows models to use external data to improve responses.
