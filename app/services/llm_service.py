@@ -1,10 +1,16 @@
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import HumanMessage
+from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain.messages import HumanMessage
 from app.services.vector_store import vector_db
 
-llm = ChatOpenAI(
-    temperature=0.7,
-    model="gpt-3.5-turbo"
+load_dotenv()
+
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-pro",
+    temperature=1.0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2,
 )
 
 def get_response(query: str):
@@ -13,7 +19,7 @@ def get_response(query: str):
     context = " ".join([doc.page_content for doc in docs])
 
     prompt = f"Answer based on context: {context}\nQuestion: {query}"
-    response = llm([HumanMessage(content=prompt)])
+    response = llm.invoke([HumanMessage(content=prompt)])
     return response.content
 
-  return llm([HumanMessage(content=query)]).content
+  return llm.invoke([HumanMessage(content=query)]).content

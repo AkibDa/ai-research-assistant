@@ -7,4 +7,4 @@ router = APIRouter()
 async def upload(file: UploadFile):
     content = await file.read()
     store_document(content)
-    return {"message": "File processed"}
+    return {"message": "File processed and stored successfully"}
