@@ -6,7 +6,7 @@ from app.services.vector_store import vector_db
 load_dotenv()
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-pro",
+    model="gemini-2.5-flash",
     temperature=1.0,
     max_tokens=None,
     timeout=None,
