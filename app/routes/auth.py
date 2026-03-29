@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from app.services.auth_service import *
+from app.db import SessionLocal, User as DBUser
 
 router = APIRouter()
 
@@ -10,19 +11,33 @@ class User(BaseModel):
 
 @router.post("/register")
 def register(user: User):
-    if user.username in fake_users_db:
+    db = SessionLocal()
+
+    existing = db.query(DBUser).filter(DBUser.username == user.username).first()
+    if existing:
+        db.close()
         raise HTTPException(status_code=400, detail="User exists")
 
     hashed = hash_password(user.password)
-    fake_users_db[user.username] = hashed
+
+    new_user = DBUser(username=user.username, password=hashed)
+    db.add(new_user)
+    db.commit()
+    db.close()
+
     return {"message": "User registered"}
 
 @router.post("/login")
 def login(user: User):
-    stored = fake_users_db.get(user.username)
+    db = SessionLocal()
 
-    if not stored or not verify_password(user.password, stored):
+    db_user = db.query(DBUser).filter(DBUser.username == user.username).first()
+
+    if not db_user or not verify_password(user.password, db_user.password):
+        db.close()
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    token = create_access_token({"sub": user.username})
+    token = create_access_token({"sub": db_user.username})
+    db.close()
+
     return {"access_token": token}
