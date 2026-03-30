@@ -1,3 +1,5 @@
+# app/services/vector_store.py
+
 from langchain_community.vectorstores import FAISS
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
@@ -13,3 +15,4 @@ def store_document(text: str):
     embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2-preview")
 
     vector_db = FAISS.from_texts(docs, embeddings)
+    

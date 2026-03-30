@@ -1,3 +1,5 @@
+# app/routes/auth.py
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from app.services.auth_service import *

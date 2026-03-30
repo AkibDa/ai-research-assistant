@@ -1,3 +1,5 @@
+# app/services/auth_service.py
+
 import hashlib
 from jose import jwt
 from datetime import datetime, timedelta
