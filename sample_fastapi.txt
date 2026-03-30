@@ -1,0 +1,4 @@
+FastAPI is a high-performance Python web framework built for creating REST APIs.
+It supports asynchronous request handling and automatic interactive API documentation.
+FastAPI is commonly used for backend systems, microservices, and AI APIs.
+The framework automatically validates request data using Pydantic.
