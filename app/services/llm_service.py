@@ -32,7 +32,6 @@ def get_response(query: str, user: str):
   }
 
   response = agent.invoke(state)
-  print(response)
 
   final_response = normalize_llm_content(response["messages"][-1].content)
 

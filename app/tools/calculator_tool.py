@@ -1,15 +1,11 @@
 from langchain.tools import tool
+from sympy import sympify
 
 @tool
 def calculator(expression: str) -> str:
-    """Safely evaluate arithmetic expressions."""
+    """Use for arithmetic, algebra, symbolic math, and simplification."""
     try:
-        allowed = "0123456789+-*/(). "
-        if not all(c in allowed for c in expression):
-            return "Invalid expression"
-
-        result = eval(expression)
+        result = sympify(expression)
         return str(result)
-
     except Exception:
         return "Calculation failed"
