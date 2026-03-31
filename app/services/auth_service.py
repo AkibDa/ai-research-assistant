@@ -1,5 +1,6 @@
 # app/services/auth_service.py
 
+import os
 import hashlib
 from jose import jwt
 from fastapi import Depends, HTTPException
@@ -7,7 +8,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
 
-SECRET_KEY = "your-secret-key"
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 

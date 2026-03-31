@@ -1,3 +1,5 @@
+# app/utils/parser.py
+
 def normalize_llm_content(content):
   if isinstance(content, list):
     return "\n".join(

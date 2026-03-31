@@ -3,6 +3,7 @@
 from fastapi import APIRouter, UploadFile, Depends
 from app.services.auth_service import get_current_user
 from app.db import SessionLocal, Document
+from app.services.vector_store import store_document
 
 router = APIRouter()
 
@@ -20,5 +21,7 @@ async def upload(file: UploadFile, user: str = Depends(get_current_user)):
     db.add(doc)
     db.commit()
     db.close()
+
+    store_document(text)
 
     return {"message": "File uploaded successfully"}
