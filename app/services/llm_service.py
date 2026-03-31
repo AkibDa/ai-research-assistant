@@ -1,19 +1,9 @@
 # app/services/llm_service.py
 
-from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
+from app.services.agent_service import agent
 from app.utils.memory_store import get_user_messages, save_message
 from app.db import SessionLocal, Document
-
-load_dotenv()
-
-llm = ChatGoogleGenerativeAI(
-  model="gemini-2.5-flash",
-  temperature=1.0,
-  max_tokens=None,
-  timeout=None,
-  max_retries=2,
-)
+from app.utils.parser import normalize_llm_content
 
 def get_user_context(user: str):
   db = SessionLocal()
@@ -37,9 +27,16 @@ def get_response(query: str, user: str):
   messages.extend(memory)
   messages.append({"role": "user", "content": query})
 
-  response = llm.invoke(messages)
+  state = {
+    "messages": messages
+  }
+
+  response = agent.invoke(state)
+  print(response)
+
+  final_response = normalize_llm_content(response["messages"][-1].content)
 
   save_message(user, "user", query)
-  save_message(user, "assistant", response.content)
+  save_message(user, "assistant", final_response)
 
-  return response.content
+  return final_response
